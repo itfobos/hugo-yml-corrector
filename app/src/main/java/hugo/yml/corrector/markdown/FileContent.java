@@ -62,7 +62,7 @@ public class FileContent {
                 .append(FIELDS_DELIMITER).append('\n')
                 .append(writer.toString())
                 .append(FIELDS_DELIMITER).append('\n')
-                .append(pageBody);
+                .append(pageBody).append('\n');
 
         try {
             Files.writeString(filePath, resultContent);
