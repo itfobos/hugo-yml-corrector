@@ -1,12 +1,11 @@
 package hugo.yml.corrector;
 
-import hugo.yml.corrector.markdown.HugoMarkdownFile;
+import hugo.yml.corrector.markdown.FileContent;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 public class App {
@@ -28,17 +27,15 @@ public class App {
             return;
         }
 
-        System.out.println("Directory content is:\n" +
-                String.join("\n", Objects.requireNonNull(srcDir.list()))
-                + "\n ----------------------------------------");
+        System.out.println("Directory: " + pathToProcess);
 
         try (Stream<Path> pathsStream = Files.walk(srcDir.toPath())) {
             pathsStream
                     .filter(Files::isRegularFile)
                     .filter(p -> p.toString().endsWith(".md"))
                     .filter(p -> !p.toString().endsWith("_index.html"))
-                    .map(HugoMarkdownFile::new)
-                    .forEach(HugoMarkdownFile::adjustYmlPart);
+                    .map(FileContent::of)
+                    .forEach(FileContent::adjustYmlPart);
         } catch (IOException e) {
             e.printStackTrace();
         }
