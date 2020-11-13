@@ -28,3 +28,7 @@ application {
     // Define the main class for the application.
     mainClass = 'hugo.yml.corrector.App'
 }
+
+compileJava {
+    options.release = 15
+}

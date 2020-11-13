@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -101,7 +102,7 @@ public class FileContent {
                 .ifPresent(val -> yaml.put(IMAGE_YML_PROPERTY, val));
     }
 
-    private void removeNullableProperties() {
+    void removeNullableProperties() {
         final List<Map.Entry<String, Object>> nullableEntries = yaml.entrySet().stream()
                 .filter(entry -> entry.getValue() == null)
                 .collect(Collectors.toList());
@@ -114,7 +115,7 @@ public class FileContent {
 
     public static FileContent of(Path filePath) {
         try {
-            List<String> srcLines = List.copyOf(Files.readAllLines(filePath, StandardCharsets.UTF_8));
+            List<String> srcLines = Collections.unmodifiableList(Files.readAllLines(filePath, StandardCharsets.UTF_8));
 
             String yamlStr = srcLines.stream().filter(new IsYmlLinePredicate()).collect(Collectors.joining("\n"));
 
